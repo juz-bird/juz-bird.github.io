@@ -32,7 +32,7 @@
                 <th>Price</th>
             </tr>
         </thead>
-        <tbody id="bodddy">
+        <tbody>
             <!-- Product list items will be added here dynamically -->
         </tbody>
         <tfoot>
@@ -50,36 +50,28 @@
     <label for="netAmount">NET Amount:</label>
     <span id="netAmount"></span>
  
- 
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
     <script>
         var totalPrice = 0
         function calculateVAT() {
             var vatRate = 0.07; // 7% VAT rate
             var vatAmount = totalPrice * vatRate;
-            document.getElementById("vatAmount").textContent = vatAmount.toFixed(2);
             var netAmount = totalPrice + vatAmount;
-            document.getElementById("netAmount").textContent = netAmount.toFixed(2);
- 
-            console.log(totalPrice, vatAmount, netAmount);
+            $("#vatAmount").text(vatAmount.toFixed(2));
+            $("#netAmount").text(netAmount.toFixed(2))
         }
  
         function addToProductList() {
-            var accessorySelect = document.getElementById("accessory");
-            var accessoryOption = accessorySelect.options[accessorySelect.selectedIndex];
-            var accessoryName = accessoryOption.text;
-            var accessoryPrice = accessoryOption.value;
-            var amountInput = document.getElementById("amount");
-            var amount = amountInput.value;
+            var accessorySelect = $("#accessory option:selected");
+            var accessoryName = accessorySelect.text();
+            var accessoryPrice = accessorySelect.val();
+
+            var amount = $("#amount").val();
  
-            var productList = document.getElementById("bodddy");
-            var newRow = productList.insertRow(-1);
-            var accessoryCell = newRow.insertCell(0);
-            var amountCell = newRow.insertCell(1);
-            var priceCell = newRow.insertCell(2);
- 
-            accessoryCell.innerHTML = accessoryName;
-            amountCell.innerHTML = amount;
-            priceCell.innerHTML = accessoryPrice * amount;
+            $('#productList tbody')
+                .append('<tr><td>' + accessoryName + '</td><td>' + accessoryPrice + '</td><td>' + accessoryPrice * amount + '</td></tr>');
+           
  
             // Update the total price
             totalPrice += accessoryPrice * amount
